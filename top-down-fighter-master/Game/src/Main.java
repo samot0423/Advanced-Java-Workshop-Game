@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
+
 public class Main extends JFrame implements KeyListener {
     @Override
     public void keyTyped(KeyEvent keyEvent) {
@@ -18,8 +19,8 @@ public class Main extends JFrame implements KeyListener {
 
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_SPACE:
-                g.setColor(Color.green);
-                g.drawString(Long.toString(fps), 10, 40);
+           /*     g.setColor(Color.green);
+                g.drawString(Long.toString(fps), 10, 40);   */
                 break;
             case KeyEvent.VK_UP:
 
