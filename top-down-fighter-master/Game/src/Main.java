@@ -1,8 +1,13 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import static javafx.scene.paint.Color.rgb;
 
 
 public class Main extends JFrame implements KeyListener {
@@ -11,20 +16,21 @@ public class Main extends JFrame implements KeyListener {
 
     }
 
-    Color c;
-
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-
-
         switch (keyEvent.getKeyCode()) {
-            case KeyEvent.VK_SPACE:
-           /*     g.setColor(Color.green);
-                g.drawString(Long.toString(fps), 10, 40);   */
+            case KeyEvent.VK_W:
+
+
+        /*    case KeyEvent.VK_SPACE:
+                g.setColor(Color.green);
+                g.drawString(Long.toString(fps), 10, 40);
                 break;
             case KeyEvent.VK_UP:
 
-                break;
+                break; */
+
+
         }
     }
 
@@ -53,12 +59,15 @@ public class Main extends JFrame implements KeyListener {
     private int fps;
 
     //sprite1 variables
-    private float x = 50;
-    private float v = 10;
+    private float x = 50.0f;
+    private float v = 10.0f;
 
     //sprite2 variables
     private float x2 = 50.0f;
     private float v2 = 100.0f;
+
+    //player variables
+   // private float x3 =
 
 
     public Main(int width, int height, int fps) {
@@ -93,35 +102,41 @@ public class Main extends JFrame implements KeyListener {
         fps = (int) (1f / dt);
 
         //update sprite
-        x += v;
-        if (x < 50 || x > (WIDTH - 50)) v *= -1;
+        //  x += v;
+        //  if (x < 50 || x > (WIDTH - 50)) v *= -1;
 
         x2 += v2 * dt;
         if (x2 < 50 || x2 > (WIDTH - 50)) v2 *= -1.0f;
+
     }
 
     private void draw() {
+        Color myColor = new Color(117, 68, 24);
+        Color mycolor = new Color(52, 157, 39);
         //get canvas
         Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 
         //clear screen
-        g.setColor(Color.black);
+        g.setColor(mycolor);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
         //draw fps
-        g.setColor(Color.green);
+        g.setColor(Color.cyan);
         g.drawString(Long.toString(fps), 10, 40);
 
         //draw sentence
-        g.setColor(Color.black);
+      /*  g.setColor(Color.black);
         g.drawString("Hi!", );
-
+*/
         //draw sprite
-        g.setColor(Color.darkGray);
-        g.fillRect((int) x, HEIGHT / 2 - 25, 100, 100);
+        g.setColor(myColor);
+        g.fillOval((int) x, HEIGHT / 5 - 30, 10, 10);
 
-        g.setColor(Color.lightGray);
-        g.fillRect((int) x2, HEIGHT / 2, 50, 50);
+        g.setColor(Color.gray);
+        g.fillOval((int) x2, HEIGHT / 2, 50, 50);
+
+        //put image on screen
+        // g.drawImage(makeImage("\\assets\\green grass.jpg"), null, (int)x, 0);
 
         //release resources, show the buffer
         g.dispose();
@@ -157,9 +172,20 @@ public class Main extends JFrame implements KeyListener {
 
     }
 
+    BufferedImage makeImage(String path) {
+
+        try {
+            return ImageIO.read(
+                    new File(System.getProperty("user.dir") + path));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public static void main(String[] args) {
-        Main game = new Main(800, 1000, 50);
+        Main game = new Main(800, 1000, 80);
         game.run();
     }
 
