@@ -67,7 +67,7 @@ public class Main extends JFrame implements KeyListener {
     private float v2 = 100.0f;
 
     //player variables
-   // private float x3 =
+    // private float x3 =
 
 
     public Main(int width, int height, int fps) {
@@ -135,8 +135,9 @@ public class Main extends JFrame implements KeyListener {
         g.setColor(Color.gray);
         g.fillOval((int) x2, HEIGHT / 2, 50, 50);
 
+
         //put image on screen
-        // g.drawImage(makeImage("\\assets\\green grass.jpg"), null, (int)x, 0);
+        g.drawImage(makeImage("\\assets\\download.jpg"), null, (int) x, 500);
 
         //release resources, show the buffer
         g.dispose();
