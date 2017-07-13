@@ -21,16 +21,6 @@ public class Main extends JFrame implements KeyListener {
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_W:
 
-
-        /*    case KeyEvent.VK_SPACE:
-                g.setColor(Color.green);
-                g.drawString(Long.toString(fps), 10, 40);
-                break;
-            case KeyEvent.VK_UP:
-
-                break; */
-
-
         }
     }
 
@@ -66,9 +56,6 @@ public class Main extends JFrame implements KeyListener {
     private float x2 = 50.0f;
     private float v2 = 100.0f;
 
-    //player variables
-    // private float x3 =
-
 
     public Main(int width, int height, int fps) {
         super("JFrame Demo");
@@ -102,23 +89,29 @@ public class Main extends JFrame implements KeyListener {
         fps = (int) (1f / dt);
 
         //update sprite
-        //  x += v;
-        //  if (x < 50 || x > (WIDTH - 50)) v *= -1;
+        x += v * dt;
+        if (x <= 0 || x > (WIDTH - 574)) v *= -1.0f;
 
         x2 += v2 * dt;
-        if (x2 < 50 || x2 > (WIDTH - 50)) v2 *= -1.0f;
+        if (x2 <= 0 || x2 > (574)) v2 *= -1.0f;
 
     }
 
     private void draw() {
         Color myColor = new Color(117, 68, 24);
-        Color mycolor = new Color(52, 157, 39);
+        Color MyColor = new Color(52, 157, 39);
         //get canvas
         Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 
         //clear screen
-        g.setColor(mycolor);
+        g.setColor(MyColor);
         g.fillRect(0, 0, WIDTH, HEIGHT);
+
+
+        //put image on screen
+        g.drawImage(makeImage("\\Game\\assets\\green grass.jpg"), null, 0, 25);
+        g.drawImage(makeImage("\\Game\\assets\\green grass.jpg"), null, 0, 450);
+
 
         //draw fps
         g.setColor(Color.cyan);
@@ -130,14 +123,11 @@ public class Main extends JFrame implements KeyListener {
 */
         //draw sprite
         g.setColor(myColor);
-        g.fillOval((int) x, HEIGHT / 5 - 30, 10, 10);
+        g.fillOval((int) x, HEIGHT / 5 - 30, 40, 40);
 
         g.setColor(Color.gray);
         g.fillOval((int) x2, HEIGHT / 2, 50, 50);
 
-
-        //put image on screen
-        g.drawImage(makeImage("\\assets\\download.jpg"), null, (int) x, 500);
 
         //release resources, show the buffer
         g.dispose();
@@ -176,6 +166,7 @@ public class Main extends JFrame implements KeyListener {
     BufferedImage makeImage(String path) {
 
         try {
+            //System.out.println(System.getProperty("user.dir") + path);
             return ImageIO.read(
                     new File(System.getProperty("user.dir") + path));
         } catch (Exception e) {
@@ -186,7 +177,7 @@ public class Main extends JFrame implements KeyListener {
 
 
     public static void main(String[] args) {
-        Main game = new Main(800, 1000, 80);
+        Main game = new Main(626, 1000, 80);
         game.run();
     }
 
