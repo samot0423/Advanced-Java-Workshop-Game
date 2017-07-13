@@ -15,19 +15,12 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Game/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="423">
-              <caret line="163" column="5" lean-forward="false" selection-start-line="163" selection-start-column="5" selection-end-line="163" selection-end-column="5" />
+            <state relative-caret-position="450">
+              <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="green grass.jpg" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Game/assets/green grass.jpg">
-          <provider selected="true" editor-type-id="images">
-            <state />
           </provider>
         </entry>
       </file>
@@ -44,6 +37,8 @@
     <findStrings>
       <find>import javax\.swing\.\*\;\nimport java\.awt\.\*\;\nimport java\.awt\.event\.KeyEvent\;\nimport java\.awt\.event\.KeyListener\;\nimport java\.awt\.image\.BufferStrategy\;\n\npublic class Main extends JFrame implements KeyListener \{\n    \@Override\n    public void keyTyped\(KeyEvent keyEvent\) \{\n\n    \}\n\n    \@Override\n    public void keyPressed\(KeyEvent keyEvent\) \{\n        \/\/get canvas\n        Graphics2D g \= \(Graphics2D\) strategy\.getDrawGraphics\(\)\;\n\n        switch \(keyEvent\.getKeyCode\(\)\) \{\n            case KeyEvent\.VK_SPACE\:\n                g\.setColor\(Color\.green\)\;\n                g\.drawString\(Long\.toString\(fps\)\, 10\, 40\)\;\n                System\.out\.println\(\&quot;AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\!\&quot;\)\;\n                break\;\n            case KeyEvent\.VK_UP\:\n                System\.out\.println\(\&quot;OOOOOOOOOOOOOOOOOOOOHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\!\&quot;\)\;\n                break\;\n        \}\n    \}\n\n    \@Override\n    public void keyReleased\(KeyEvent keyEvent\) \{\n\n    \}\n\n\n    \/\/window vars\n    private final int MAX_FPS\;\n    private final int WIDTH\;\n    private final int HEIGHT\;\n\n    \/\/double buffer\n    private BufferStrategy strategy\;\n\n    \/\/loop variables\n    private boolean isRunning \= true\;\n    private long rest \= 0\;\n\n    \/\/timing variables\n    private float dt\;\n    private long lastFrame\;\n    private long startFrame\;\n    private int fps\;\n\n    \/\/sprite1 variables\n    private float x \= 50\;\n    private float v \= 10\;\n\n    \/\/sprite2 variables\n    private float x2 \= 50\.0f\;\n    private float v2 \= 100\.0f\;\n\n\n    public Main\(int width\, int height\, int fps\) \{\n        super\(\&quot;JFrame Demo\&quot;\)\;\n        this\.MAX_FPS \= fps\;\n        this\.WIDTH \= width\;\n        this\.HEIGHT \= height\;\n    \}\n\n    void init\(\) \{\n        \/\/initialize JFrame\n        setPreferredSize\(new Dimension\(WIDTH\, HEIGHT\)\)\;\n        setLayout\(null\)\;\n        setDefaultCloseOperation\(JFrame\.EXIT_ON_CLOSE\)\;\n\n        setBounds\(0\, 0\, WIDTH\, HEIGHT\)\;\n\n        setIgnoreRepaint\(true\)\;\n\n        setResizable\(false\)\;\n        setVisible\(true\)\;\n\n        \/\/create double buffer strategy\n        createBufferStrategy\(2\)\;\n        strategy \= getBufferStrategy\(\)\;\n\n        lastFrame \= System\.currentTimeMillis\(\)\;\n    \}\n\n    private void update\(\) \{\n        \/\/update current fps\n        fps \= \(int\) \(1f \/ dt\)\;\n\n        \/\/update sprite\n        x \+\= v\;\n        if \(x \&lt; 50 \|\| x \&gt; \(WIDTH \- 50\)\) v \*\= \-1\;\n\n        x2 \+\= v2 \* dt\;\n        if \(x2 \&lt; 50 \|\| x2 \&gt; \(WIDTH \- 50\)\) v2 \*\= \-1\.0f\;\n    \}\n\n    private void draw\(\) \{\n        \/\/get canvas\n        Graphics2D g \= \(Graphics2D\) strategy\.getDrawGraphics\(\)\;\n\n        \/\/clear screen\n        g\.setColor\(Color\.black\)\;\n        g\.fillRect\(0\, 0\, WIDTH\, HEIGHT\)\;\n\n        \/\/draw fps\n        g\.setColor\(Color\.green\)\;\n        g\.drawString\(Long\.toString\(fps\)\, 10\, 40\)\;\n\n        \/\/draw sentence\n\n        \/\/draw sprite\n        g\.setColor\(Color\.darkGray\)\;\n        g\.fillRect\(\(int\) x\, HEIGHT \/ 2 \- 25\, 100\, 100\)\;\n\n        g\.setColor\(Color\.lightGray\)\;\n        g\.fillRect\(\(int\) x2\, HEIGHT \/ 2\, 50\, 50\)\;\n\n        \/\/release resources\, show the buffer\n        g\.dispose\(\)\;\n        strategy\.show\(\)\;\n    \}\n\n\n    public void run\(\) \{\n        init\(\)\;\n\n        while \(isRunning\) \{\n            \/\/new loop\, clock the start\n            startFrame \= System\.currentTimeMillis\(\)\;\n            \/\/calculate delta time\n            dt \= \(float\) \(startFrame \- lastFrame\) \/ 1000\;\n            \/\/log the current time\n            lastFrame \= startFrame\;\n\n            \/\/call update and draw methods\n            update\(\)\;\n            draw\(\)\;\n\n            \/\/dynamic thread sleep\, only sleep the time we need to cap the framerate\n            rest \= \(1000 \/ MAX_FPS\) \- \(System\.currentTimeMillis\(\) \- startFrame\)\;\n            if \(rest \&gt; 0\) \{\n                try \{\n                    Thread\.sleep\(rest\)\;\n                \} catch \(InterruptedException e\) \{\n                    e\.printStackTrace\(\)\;\n                \}\n            \}\n        \}\n\n    \}\n\n\n    public static void main\(String\[\] args\) \{\n        Main game \= new Main\(2000\, 1500\, 50\)\;\n        game\.run\(\)\;\n    \}\n\n\}</find>
       <find>jfr</find>
+      <find>dt</find>
+      <find>init</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -423,9 +418,9 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.50208336" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -529,8 +524,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Game/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="163" column="5" lean-forward="false" selection-start-line="163" selection-start-column="5" selection-end-line="163" selection-end-column="5" />
+        <state relative-caret-position="450">
+          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

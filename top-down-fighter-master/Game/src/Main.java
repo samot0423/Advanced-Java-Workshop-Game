@@ -6,11 +6,35 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 import static javafx.scene.paint.Color.rgb;
 
 
 public class Main extends JFrame implements KeyListener {
+
+    ArrayList<Integer> keys = new ArrayList<>();
+
+    private void handleKeys() {
+        for (int i = keys.size() - 1; i >= 0; i--) {
+            switch (keys.get(i)) {
+                //handle movement
+                case KeyEvent.VK_W:
+                    y -= vy * dt;
+                    break;
+                case KeyEvent.VK_A:
+                    x -= vx * dt;
+                    break;
+                case KeyEvent.VK_S:
+                    y += vy * dt;
+                    break;
+                case KeyEvent.VK_D:
+                    x += vx * dt;
+                    break;
+            }
+        }
+    }
+
     @Override
     public void keyTyped(KeyEvent keyEvent) {
 
@@ -18,15 +42,18 @@ public class Main extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getKeyCode()) {
-            case KeyEvent.VK_W:
+        if (!keys.contains(keyEvent.getKeyCode()))
+            keys.add(keyEvent.getKeyCode());
 
-        }
+
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-
+        for (int i = keys.size() - 1; i >= 0; i--) {
+            if (keys.get(i) == keyEvent.getKeyCode())
+                keys.remove(i);
+        }
     }
 
 
@@ -48,13 +75,17 @@ public class Main extends JFrame implements KeyListener {
     private long startFrame;
     private int fps;
 
-    //sprite1 variables
-    private float x = 50.0f;
-    private float v = 10.0f;
+    //player variables
+    private float x = 100.0f;
+    private float y = 50.0f;
 
     //sprite2 variables
     private float x2 = 50.0f;
     private float v2 = 100.0f;
+
+    //velocity1 variables
+    private float vx = 100.0f;
+    private float vy = 100.0f;
 
 
     public Main(int width, int height, int fps) {
@@ -82,18 +113,19 @@ public class Main extends JFrame implements KeyListener {
         strategy = getBufferStrategy();
 
         lastFrame = System.currentTimeMillis();
+        addKeyListener(this);
+        setFocusable(true);
     }
 
     private void update() {
         //update current fps
         fps = (int) (1f / dt);
 
-        //update sprite
-        x += v * dt;
-        if (x <= 0 || x > (WIDTH - 574)) v *= -1.0f;
+        handleKeys();
 
+        //update sprite
         x2 += v2 * dt;
-        if (x2 <= 0 || x2 > (574)) v2 *= -1.0f;
+        if (x2 < 1 || x2 > (574)) v2 *= -1.0f;
 
     }
 
@@ -117,13 +149,9 @@ public class Main extends JFrame implements KeyListener {
         g.setColor(Color.cyan);
         g.drawString(Long.toString(fps), 10, 40);
 
-        //draw sentence
-      /*  g.setColor(Color.black);
-        g.drawString("Hi!", );
-*/
         //draw sprite
         g.setColor(myColor);
-        g.fillOval((int) x, HEIGHT / 5 - 30, 40, 40);
+        g.fillOval((int) x, (int) y, 40, 40);
 
         g.setColor(Color.gray);
         g.fillOval((int) x2, HEIGHT / 2, 50, 50);
