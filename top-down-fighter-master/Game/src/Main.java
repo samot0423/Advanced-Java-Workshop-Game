@@ -8,11 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
-import static javafx.scene.paint.Color.rgb;
-
-
 public class Main extends JFrame implements KeyListener {
-
+    int w = 40;
+    int h = 40;
+    //create array list
     ArrayList<Integer> keys = new ArrayList<>();
 
     private void handleKeys() {
@@ -79,17 +78,16 @@ public class Main extends JFrame implements KeyListener {
     private float x = 100.0f;
     private float y = 50.0f;
 
-    //sprite2 variables
+    //gray sprite variables
     private float x2 = 50.0f;
     private float v2 = 100.0f;
 
-    //velocity1 variables
-    private float vx = 100.0f;
-    private float vy = 100.0f;
-
+    //player velocity variables
+    private float vx = 105.0f;
+    private float vy = 105.0f;
 
     public Main(int width, int height, int fps) {
-        super("JFrame Demo");
+        super("Top Down Fighter");
         this.MAX_FPS = fps;
         this.WIDTH = width;
         this.HEIGHT = height;
@@ -127,9 +125,21 @@ public class Main extends JFrame implements KeyListener {
         x2 += v2 * dt;
         if (x2 < 1 || x2 > (574)) v2 *= -1.0f;
 
+        //set player to teleport to other side when hits one side
+        if (x <= 0) {
+            x = WIDTH - w - 1;
+        } else if (x + w >= WIDTH) {
+            x = 1;
+        }
+        if (y <= 25) {
+            y = HEIGHT - h - 5;
+        } else if (y + h >= HEIGHT) {
+            y = 25;
+        }
     }
 
     private void draw() {
+
         Color myColor = new Color(117, 68, 24);
         Color MyColor = new Color(52, 157, 39);
         //get canvas
@@ -149,10 +159,11 @@ public class Main extends JFrame implements KeyListener {
         g.setColor(Color.cyan);
         g.drawString(Long.toString(fps), 10, 40);
 
-        //draw sprite
+        //draw player
         g.setColor(myColor);
-        g.fillOval((int) x, (int) y, 40, 40);
+        g.fillOval((int) x, (int) y, w, h);
 
+        //draw sprite
         g.setColor(Color.gray);
         g.fillOval((int) x2, HEIGHT / 2, 50, 50);
 
@@ -192,7 +203,6 @@ public class Main extends JFrame implements KeyListener {
     }
 
     BufferedImage makeImage(String path) {
-
         try {
             //System.out.println(System.getProperty("user.dir") + path);
             return ImageIO.read(
