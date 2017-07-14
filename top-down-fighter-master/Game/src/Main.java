@@ -8,7 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
-public class Main extends JFrame implements KeyListener {
+public class Main extends JFrame implements KeyListener{
+    Soldier player;
     int w = 40;
     int h = 40;
     //create array list
@@ -94,6 +95,7 @@ public class Main extends JFrame implements KeyListener {
     }
 
     void init() {
+        player = new Soldier();
         //initialize JFrame
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(null);
