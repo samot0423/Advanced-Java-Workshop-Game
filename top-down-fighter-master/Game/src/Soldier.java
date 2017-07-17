@@ -6,13 +6,13 @@ public class Soldier {
 
     Vector p; //position
     Vector v; //velocity
-    Vector sz = new Vector(40, 40); //soldier size
+    Vector sz = new Vector(50, 50); //soldier size
     float d; //direction
 
     Color c; //soldier color
 
     float sp = 105.0f; //speed
-    final float ts = (float) Math.toRadians(12); //turning speed
+    final float ts = (float) Math.toRadians(100); //turning speed
 
     //weapon variables
     Vector wsz = new Vector(sz.x / 3, sz.y * 1.5f); //weapon size
@@ -34,6 +34,8 @@ public class Soldier {
         isMovingBackwards = false;
 
         v = new Vector(0, 0);
+        p = new Vector((float)Math.random() * WindowSize.x, (float)Math.random() * WindowSize.y);
+
     }
 
     public void update(float dt) {
@@ -52,6 +54,18 @@ public class Soldier {
 
         if (isMoving) isMoving = false;
         if (isMovingBackwards) isMovingBackwards = false;
+
+        //set player to teleport to other side when hits one side
+        if (p.ix <= 0) {
+            p.setX(WindowSize.x - sz.x - 1);
+        } else if (p.ix + sz.x >= WindowSize.x) {
+            p.setX(1);
+        }
+        if (p.iy <= 25) {
+            p.setY(WindowSize.y - sz.y - 5);
+        } else if (p.iy + sz.y >= WindowSize.y) {
+            p.iy = 25;
+        }
     }
 
     public void turnLeft() {
@@ -66,9 +80,11 @@ public class Soldier {
 
     public void moveForwards() {
         isMoving = true;
+        //isMovingBackwards = false;
     }
 
     public void moveBackwards() {
+        isMoving = true;
         isMovingBackwards = true;
     }
 

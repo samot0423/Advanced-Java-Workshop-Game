@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
-public class Main extends JFrame implements KeyListener{
+public class Main extends JFrame implements KeyListener {
     Soldier player;
     int w = 40;
     int h = 40;
@@ -20,16 +20,16 @@ public class Main extends JFrame implements KeyListener{
             switch (keys.get(i)) {
                 //handle movement
                 case KeyEvent.VK_W:
-                    y -= vy * dt;
+                    player.moveForwards();
                     break;
                 case KeyEvent.VK_A:
-                    x -= vx * dt;
-                    break;
-                case KeyEvent.VK_S:
-                    y += vy * dt;
+                    player.turnLeft();
                     break;
                 case KeyEvent.VK_D:
-                    x += vx * dt;
+                    player.turnRight();
+                    break;
+                case KeyEvent.VK_S:
+                    player.moveBackwards();
                     break;
             }
         }
@@ -95,7 +95,7 @@ public class Main extends JFrame implements KeyListener{
     }
 
     void init() {
-        player = new Soldier();
+        player = new Soldier(true, 626, 1000, Color.CYAN, Color.BLACK);
         //initialize JFrame
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(null);
@@ -123,21 +123,8 @@ public class Main extends JFrame implements KeyListener{
 
         handleKeys();
 
-        //update sprite
-        x2 += v2 * dt;
-        if (x2 < 1 || x2 > (574)) v2 *= -1.0f;
+        player.update(dt);
 
-        //set player to teleport to other side when hits one side
-        if (x <= 0) {
-            x = WIDTH - w - 1;
-        } else if (x + w >= WIDTH) {
-            x = 1;
-        }
-        if (y <= 25) {
-            y = HEIGHT - h - 5;
-        } else if (y + h >= HEIGHT) {
-            y = 25;
-        }
     }
 
     private void draw() {
@@ -163,12 +150,13 @@ public class Main extends JFrame implements KeyListener{
 
         //draw player
         g.setColor(myColor);
-        g.fillOval((int) x, (int) y, w, h);
+        player.draw(g);
 
-        //draw sprite
+
+        /*//draw sprite
         g.setColor(Color.gray);
         g.fillOval((int) x2, HEIGHT / 2, 50, 50);
-
+*/
 
         //release resources, show the buffer
         g.dispose();
@@ -201,7 +189,6 @@ public class Main extends JFrame implements KeyListener{
                 }
             }
         }
-
     }
 
     BufferedImage makeImage(String path) {
