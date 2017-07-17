@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public class Main extends JFrame implements KeyListener {
     Soldier player;
-    int w = 40;
-    int h = 40;
     //create array list
     ArrayList<Integer> keys = new ArrayList<>();
 
@@ -75,18 +73,6 @@ public class Main extends JFrame implements KeyListener {
     private long startFrame;
     private int fps;
 
-    //player variables
-    private float x = 100.0f;
-    private float y = 50.0f;
-
-    //gray sprite variables
-    private float x2 = 50.0f;
-    private float v2 = 100.0f;
-
-    //player velocity variables
-    private float vx = 105.0f;
-    private float vy = 105.0f;
-
     public Main(int width, int height, int fps) {
         super("Top Down Fighter");
         this.MAX_FPS = fps;
@@ -95,7 +81,7 @@ public class Main extends JFrame implements KeyListener {
     }
 
     void init() {
-        player = new Soldier(true, 626, 1000, Color.CYAN, Color.BLACK);
+        player = new Soldier(true, 626, 1000, Color.CYAN, Color.gray);
         //initialize JFrame
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(null);
@@ -152,12 +138,6 @@ public class Main extends JFrame implements KeyListener {
         g.setColor(myColor);
         player.draw(g);
 
-
-        /*//draw sprite
-        g.setColor(Color.gray);
-        g.fillOval((int) x2, HEIGHT / 2, 50, 50);
-*/
-
         //release resources, show the buffer
         g.dispose();
         strategy.show();
@@ -204,7 +184,7 @@ public class Main extends JFrame implements KeyListener {
 
 
     public static void main(String[] args) {
-        Main game = new Main(626, 1000, 80);
+        Main game = new Main(626, 1000, 100);
         game.run();
     }
 

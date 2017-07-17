@@ -12,11 +12,11 @@ public class Soldier {
     Color c; //soldier color
 
     float sp = 105.0f; //speed
-    final float ts = (float) Math.toRadians(100); //turning speed
+    final float ts = (float) Math.toRadians(125); //turning speed
 
     //weapon variables
-    Vector wsz = new Vector(sz.x / 3, sz.y * 1.5f); //weapon size
-    Vector wp = new Vector(sz.x / 2, sz.y); //weapon position (relative to soldier)
+    Vector wsz = new Vector(sz.y * 1.5f, sz.x / 3); //weapon size
+    Vector wp = new Vector(sz.x / 6, sz.y / 2); //weapon position (relative to soldier)
     Color wc; //weapon color
 
     boolean isMoving; //is the player moving?
@@ -33,26 +33,29 @@ public class Soldier {
         isMoving = false;
         isMovingBackwards = false;
 
+        d = 0;
         v = new Vector(0, 0);
-        p = new Vector((float)Math.random() * WindowSize.x, (float)Math.random() * WindowSize.y);
+        p = new Vector((float) Math.random() * WindowSize.x, (float) Math.random() * WindowSize.y);
 
     }
 
     public void update(float dt) {
 
         if (isMoving) {
-            v.setX(sp); //Vector(sp, 0)
-            v.rotate(d); //rotating to up from right
+            v = Vector.unit2D(d);
+            v.mult(sp);
 
             //invert if reversing
             if (isMovingBackwards) v.mult(-1.0f);
-        }
+        } else
+            v = new Vector(0, 0);
 
         //update position
         //p += v * dt;
         p.add(Vector.mult(v, dt));
 
-        if (isMoving) isMoving = false;
+        if (isMoving)
+            isMoving = false;
         if (isMovingBackwards) isMovingBackwards = false;
 
         //set player to teleport to other side when hits one side
@@ -61,26 +64,25 @@ public class Soldier {
         } else if (p.ix + sz.x >= WindowSize.x) {
             p.setX(1);
         }
-        if (p.iy <= 25) {
-            p.setY(WindowSize.y - sz.y - 5);
+        if (p.iy <= 50) {
+            p.setY(WindowSize.y - sz.y);
         } else if (p.iy + sz.y >= WindowSize.y) {
-            p.iy = 25;
+            p.setY(51);
         }
     }
 
     public void turnLeft() {
-        d += Math.toRadians(ts);
+        d -= Math.toRadians(ts);
         d %= Math.PI * 2;
     }
 
     public void turnRight() {
-        d -= Math.toRadians(ts);
+        d += Math.toRadians(ts);
         d %= Math.PI * 2;
     }
 
     public void moveForwards() {
         isMoving = true;
-        //isMovingBackwards = false;
     }
 
     public void moveBackwards() {
@@ -94,7 +96,7 @@ public class Soldier {
         g.rotate(d);
         //draw soldier
         g.setColor(c);
-        g.fillOval(0, 0, sz.ix, sz.iy);
+        g.fillOval(-sz.ix / 2, -sz.iy / 2, sz.ix, sz.iy);
         //draw weapon
         g.setColor(wc);
         g.fillRect(wp.ix, wp.iy, wsz.ix, wsz.iy);
