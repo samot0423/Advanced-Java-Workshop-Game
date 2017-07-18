@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Soldier {
 
@@ -23,6 +24,9 @@ public class Soldier {
     boolean isMovingBackwards; //is the player moving backwards
 
     boolean isPlayer; //is this player or npc
+
+    //create array list to detect collision between weapon and soldier
+    ArrayList<Soldier> soldiers = new ArrayList<>();
 
     public Soldier(boolean isPlayer, int WindowWidth, int WindowHeight, Color c, Color wc) {
         this.isPlayer = isPlayer;
@@ -68,6 +72,9 @@ public class Soldier {
             p.setY(WindowSize.y - sz.y + 24);
         } else if (p.iy + sz.y >= WindowSize.y + 25) {
             p.setY(51);
+        }
+        for(Soldier s : soldiers){
+
         }
     }
 
