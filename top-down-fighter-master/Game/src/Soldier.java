@@ -59,14 +59,14 @@ public class Soldier {
         if (isMovingBackwards) isMovingBackwards = false;
 
         //set player to teleport to other side when hits one side
-        if (p.ix <= 0) {
-            p.setX(WindowSize.x - sz.x - 1);
-        } else if (p.ix + sz.x >= WindowSize.x) {
-            p.setX(1);
+        if (p.ix <= 25) {
+            p.setX(WindowSize.x - sz.x + 24);
+        } else if (p.ix + sz.x >= WindowSize.x + 25) {
+            p.setX(25);
         }
         if (p.iy <= 50) {
-            p.setY(WindowSize.y - sz.y);
-        } else if (p.iy + sz.y >= WindowSize.y) {
+            p.setY(WindowSize.y - sz.y + 24);
+        } else if (p.iy + sz.y >= WindowSize.y + 25) {
             p.setY(51);
         }
     }

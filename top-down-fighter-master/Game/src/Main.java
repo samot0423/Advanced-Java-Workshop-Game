@@ -10,6 +10,10 @@ import java.util.ArrayList;
 
 public class Main extends JFrame implements KeyListener {
     Soldier player;
+    Soldier enemy;
+    Color myColor = new Color(117, 68, 24);
+    Color mycolor = new Color(251, 251, 251);
+
     //create array list
     ArrayList<Integer> keys = new ArrayList<>();
 
@@ -74,14 +78,15 @@ public class Main extends JFrame implements KeyListener {
     private int fps;
 
     public Main(int width, int height, int fps) {
-        super("Top Down Fighter");
+        super("Top Down Fighter"); //name of the window
         this.MAX_FPS = fps;
         this.WIDTH = width;
         this.HEIGHT = height;
     }
 
     void init() {
-        player = new Soldier(true, 626, 1000, Color.CYAN, Color.gray);
+        player = new Soldier(true, 626, 1000, myColor, mycolor); //create the player
+        enemy = new Soldier(false, 626, 1000, Color.DARK_GRAY, Color.black); //create the first enemy
         //initialize JFrame
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(null);
@@ -110,12 +115,12 @@ public class Main extends JFrame implements KeyListener {
         handleKeys();
 
         player.update(dt);
+        enemy.update(dt);
 
     }
 
     private void draw() {
 
-        Color myColor = new Color(117, 68, 24);
         Color MyColor = new Color(52, 157, 39);
         //get canvas
         Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
@@ -137,6 +142,9 @@ public class Main extends JFrame implements KeyListener {
         //draw player
         g.setColor(myColor);
         player.draw(g);
+
+        //draw enemy
+        enemy.draw(g);
 
         //release resources, show the buffer
         g.dispose();
@@ -173,7 +181,10 @@ public class Main extends JFrame implements KeyListener {
 
     BufferedImage makeImage(String path) {
         try {
-            //System.out.println(System.getProperty("user.dir") + path);
+            /*
+            in case of error, use this format
+            System.out.println(System.getProperty("user.dir") + path);
+            */
             return ImageIO.read(
                     new File(System.getProperty("user.dir") + path));
         } catch (Exception e) {
@@ -182,7 +193,7 @@ public class Main extends JFrame implements KeyListener {
         }
     }
 
-
+    //set window size
     public static void main(String[] args) {
         Main game = new Main(626, 1000, 100);
         game.run();
