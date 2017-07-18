@@ -16,6 +16,8 @@ public class Main extends JFrame implements KeyListener {
 
     //create array list
     ArrayList<Integer> keys = new ArrayList<>();
+    //create array list to detect collision between weapon and soldier
+    ArrayList<Soldier> soldiers = new ArrayList<>();
 
     private void handleKeys() {
         for (int i = keys.size() - 1; i >= 0; i--) {
@@ -35,6 +37,19 @@ public class Main extends JFrame implements KeyListener {
                     break;
             }
         }
+       /* Vector currentp = player.getPosition();
+        for (Soldier s : soldiers) {
+            if (s.getWeaponPosition() == currentp) {
+                //player dies
+                soldiers.remove(player);
+                System.out.println("Player died!");
+            } else if (s.getPosition() == player.getWeaponPosition()) {
+                //s died
+                soldiers.remove(s);
+                System.out.println("soldier s Died!");
+            }
+        } */
+
     }
 
     @Override
@@ -87,6 +102,7 @@ public class Main extends JFrame implements KeyListener {
     void init() {
         player = new Soldier(true, 626, 1000, myColor, mycolor); //create the player
         enemy = new Soldier(false, 626, 1000, Color.DARK_GRAY, Color.black); //create the first enemy
+        //soldiers.add(enemy);
         //initialize JFrame
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(null);

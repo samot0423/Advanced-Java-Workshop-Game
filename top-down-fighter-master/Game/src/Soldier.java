@@ -18,6 +18,8 @@ public class Soldier {
     //weapon variables
     Vector wsz = new Vector(sz.y * 1.5f, sz.x / 3); //weapon size
     Vector wp = new Vector(sz.x / 6, sz.y / 2); //weapon position (relative to soldier)
+    Vector wb = Vector.add(wp, new Vector(wsz.x / 2, wsz.y * (2.0f / 3.0f)));
+    float wr = 10;
     Color wc; //weapon color
 
     boolean isMoving; //is the player moving?
@@ -26,7 +28,7 @@ public class Soldier {
     boolean isPlayer; //is this player or npc
 
     //create array list to detect collision between weapon and soldier
-    ArrayList<Soldier> soldiers = new ArrayList<>();
+    // ArrayList<Soldier> soldiers = new ArrayList<>();
 
     public Soldier(boolean isPlayer, int WindowWidth, int WindowHeight, Color c, Color wc) {
         this.isPlayer = isPlayer;
@@ -73,9 +75,12 @@ public class Soldier {
         } else if (p.iy + sz.y >= WindowSize.y + 25) {
             p.setY(51);
         }
-        for(Soldier s : soldiers){
 
-        }
+    }
+    //checks soldier a against soldier b's sword
+    static boolean isColliding(Soldier a, Soldier b){
+        //checking if 2 circles are intersecting sword blade of b and hit box of a
+        return(Vector.sub(a.p, Vector.add(b.p, b.wb)).sqmag() < (float)Math.pow(a.sz.ix + b.wr, 2));
     }
 
     public void turnLeft() {
@@ -97,6 +102,13 @@ public class Soldier {
         isMovingBackwards = true;
     }
 
+    public Vector getPosition() {
+        return p;
+    }
+
+    public Vector getWeaponPosition() {
+        return wp;
+    }
 
     public void draw(Graphics2D g) {
         g.translate(p.ix, p.iy);
