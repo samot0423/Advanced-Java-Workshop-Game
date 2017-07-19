@@ -13,6 +13,10 @@ public class Main extends JFrame implements KeyListener {
     Soldier enemy;
     Color myColor = new Color(117, 68, 24);
     Color mycolor = new Color(251, 251, 251);
+    Color MyColor = new Color(52, 157, 39);
+
+
+    Graphics2D g;
 
     //create array list
     ArrayList<Integer> keys = new ArrayList<>();
@@ -133,21 +137,19 @@ public class Main extends JFrame implements KeyListener {
         player.update(dt);
         enemy.update(dt);
 
-        if(Soldier.isColliding(player, enemy)){
-            System.out.println("player died!");
-            //player.;
+        if (Soldier.isColliding(player, enemy)) {
+            System.out.println("You lose!");
+
         }
-        if(Soldier.isColliding(enemy, player)){
-            System.out.println("enemy died!");
-            //enemy.;
+        if (Soldier.isColliding(enemy, player)) {
+            System.out.println("Enemy died!");
+            enemy.dead(g);
         }
     }
 
     private void draw() {
-
-        Color MyColor = new Color(52, 157, 39);
         //get canvas
-        Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
+        g = (Graphics2D) strategy.getDrawGraphics();
 
         //clear screen
         g.setColor(MyColor);

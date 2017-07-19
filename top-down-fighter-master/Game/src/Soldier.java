@@ -1,3 +1,5 @@
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -19,8 +21,9 @@ public class Soldier {
     Vector wsz = new Vector(sz.y * 1.5f, sz.x / 3); //weapon size
     Vector wp = new Vector(sz.x / 6, sz.y / 2); //weapon position (relative to soldier)
     Vector wb = Vector.add(wp, new Vector(wsz.y * (2.0f / 3.0f), wsz.x / 2)); //weapon hitbox
-    float wr = 1; //weapon radius
+    float wr = 10; //weapon radius
     Color wc; //weapon color
+    boolean dead = false;
 
     boolean isMoving; //is the player moving?
     boolean isMovingBackwards; //is the player moving backwards
@@ -80,8 +83,8 @@ public class Soldier {
 
     //checks soldier a against soldier b's sword
     static boolean isColliding(Soldier a, Soldier b) {
-        //checking if 2 circles are intersecting sword blade of b and hit box of a
-        return (Vector.sub(a.p, Vector.add(Vector.sub(b.p, Vector.div(b.sz, 2)), Vector.rotate(b.wb, b.d))).sqmag() < (float) Math.pow(a.sz.ix/2 + b.wr, 2));
+        //checking if 2 circles are intersecting sword blade of b and hit box of soldier a
+        return (Vector.sub(a.p, Vector.add(b.p, Vector.rotate(b.wb, b.d))).sqmag() < (float) Math.pow(a.sz.ix / 2 + b.wr, 2));
     }
 
     public void turnLeft() {
@@ -111,6 +114,11 @@ public class Soldier {
         return wp;
     }
 
+    public void dead(Graphics2D g) {
+        dead = true;
+        draw(g);
+    }
+
     public void draw(Graphics2D g) {
         g.translate(p.ix, p.iy);
         g.rotate(d);
@@ -123,5 +131,9 @@ public class Soldier {
 
         g.rotate(-d);
         g.translate(-p.ix, -p.iy);
+
+        if (dead) {
+
+        }
     }
 }
