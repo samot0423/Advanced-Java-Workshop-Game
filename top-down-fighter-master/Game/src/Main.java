@@ -133,6 +133,14 @@ public class Main extends JFrame implements KeyListener {
         player.update(dt);
         enemy.update(dt);
 
+        if(Soldier.isColliding(player, enemy)){
+            System.out.println("player died!");
+            //player.;
+        }
+        if(Soldier.isColliding(enemy, player)){
+            System.out.println("enemy died!");
+            //enemy.;
+        }
     }
 
     private void draw() {

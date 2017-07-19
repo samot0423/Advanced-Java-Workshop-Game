@@ -18,8 +18,8 @@ public class Soldier {
     //weapon variables
     Vector wsz = new Vector(sz.y * 1.5f, sz.x / 3); //weapon size
     Vector wp = new Vector(sz.x / 6, sz.y / 2); //weapon position (relative to soldier)
-    Vector wb = Vector.add(wp, new Vector(wsz.x / 2, wsz.y * (2.0f / 3.0f)));
-    float wr = 10;
+    Vector wb = Vector.add(wp, new Vector(wsz.y * (2.0f / 3.0f), wsz.x / 2)); //weapon hitbox
+    float wr = 1; //weapon radius
     Color wc; //weapon color
 
     boolean isMoving; //is the player moving?
@@ -77,10 +77,11 @@ public class Soldier {
         }
 
     }
+
     //checks soldier a against soldier b's sword
-    static boolean isColliding(Soldier a, Soldier b){
+    static boolean isColliding(Soldier a, Soldier b) {
         //checking if 2 circles are intersecting sword blade of b and hit box of a
-        return(Vector.sub(a.p, Vector.add(b.p, b.wb)).sqmag() < (float)Math.pow(a.sz.ix + b.wr, 2));
+        return (Vector.sub(a.p, Vector.add(Vector.sub(b.p, Vector.div(b.sz, 2)), Vector.rotate(b.wb, b.d))).sqmag() < (float) Math.pow(a.sz.ix/2 + b.wr, 2));
     }
 
     public void turnLeft() {
