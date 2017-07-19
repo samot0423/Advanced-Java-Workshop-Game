@@ -21,7 +21,7 @@ public class Soldier {
     Vector wsz = new Vector(sz.y * 1.5f, sz.x / 3); //weapon size
     Vector wp = new Vector(sz.x / 6, sz.y / 2); //weapon position (relative to soldier)
     Vector wb = Vector.add(wp, new Vector(wsz.y * (2.0f / 3.0f), wsz.x / 2)); //weapon hitbox
-    float wr = 10; //weapon radius
+    float wr = 7.0f; //weapon radius
     Color wc; //weapon color
     boolean dead = false;
 
@@ -50,7 +50,19 @@ public class Soldier {
 
     public void update(float dt) {
 
-        if (isMoving) {
+        if (!isPlayer) {
+            if (Main.player.v.sqmag() == 0) {
+                isMoving = false;
+                // v = new Vector(0, 0);
+            } else {
+                Vector fp = Vector.add(Main.player.p, Vector.mult(Main.player.v, 2f));
+                v = Vector.sub(fp, p);
+                v.setMag(sp - 5);
+                d = v.dir();
+                isMoving = true;
+            }
+
+        } else if (isMoving && isPlayer) {
             v = Vector.unit2D(d);
             v.mult(sp);
 
@@ -81,10 +93,18 @@ public class Soldier {
 
     }
 
+    public boolean isDead() {
+        return dead;
+    }
+
     //checks soldier a against soldier b's sword
     static boolean isColliding(Soldier a, Soldier b) {
         //checking if 2 circles are intersecting sword blade of b and hit box of soldier a
-        return (Vector.sub(a.p, Vector.add(b.p, Vector.rotate(b.wb, b.d))).sqmag() < (float) Math.pow(a.sz.ix / 2 + b.wr, 2));
+        if (a.isDead() || b.isDead()) {
+            return false;
+        } else {
+            return (Vector.sub(a.p, Vector.add(b.p, Vector.rotate(b.wb, b.d))).sqmag() < (float) Math.pow(a.sz.ix / 2 + b.wr, 2));
+        }
     }
 
     public void turnLeft() {
@@ -114,26 +134,24 @@ public class Soldier {
         return wp;
     }
 
-    public void dead(Graphics2D g) {
+    public void died(Graphics2D g) {
         dead = true;
         draw(g);
     }
 
     public void draw(Graphics2D g) {
-        g.translate(p.ix, p.iy);
-        g.rotate(d);
-        //draw soldier
-        g.setColor(c);
-        g.fillOval(-sz.ix / 2, -sz.iy / 2, sz.ix, sz.iy);
-        //draw weapon
-        g.setColor(wc);
-        g.fillRect(wp.ix, wp.iy, wsz.ix, wsz.iy);
+        if (!dead) {
+            g.translate(p.ix, p.iy);
+            g.rotate(d);
+            //draw soldier
+            g.setColor(c);
+            g.fillOval(-sz.ix / 2, -sz.iy / 2, sz.ix, sz.iy);
+            //draw weapon
+            g.setColor(wc);
+            g.fillRect(wp.ix, wp.iy, wsz.ix, wsz.iy);
 
-        g.rotate(-d);
-        g.translate(-p.ix, -p.iy);
-
-        if (dead) {
-
+            g.rotate(-d);
+            g.translate(-p.ix, -p.iy);
         }
     }
 }

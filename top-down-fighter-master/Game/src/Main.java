@@ -9,19 +9,18 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class Main extends JFrame implements KeyListener {
-    Soldier player;
+    public static Soldier player;
     Soldier enemy;
     Color myColor = new Color(117, 68, 24);
     Color mycolor = new Color(251, 251, 251);
     Color MyColor = new Color(52, 157, 39);
-
+    boolean lose = false;
 
     Graphics2D g;
 
     //create array list
     ArrayList<Integer> keys = new ArrayList<>();
-    //create array list to detect collision between weapon and soldier
-    ArrayList<Soldier> soldiers = new ArrayList<>();
+    //ArrayList<Integer> enemies = new ArrayList<>();
 
     private void handleKeys() {
         for (int i = keys.size() - 1; i >= 0; i--) {
@@ -54,6 +53,14 @@ public class Main extends JFrame implements KeyListener {
             }
         } */
 
+    }
+
+    public Color makeRandomColor() {
+        return new Color(
+                (int) (Math.random() * 255),
+                (int) (Math.random() * 255),
+                (int) (Math.random() * 255)
+        );
     }
 
     @Override
@@ -105,8 +112,7 @@ public class Main extends JFrame implements KeyListener {
 
     void init() {
         player = new Soldier(true, 626, 1000, myColor, mycolor); //create the player
-        enemy = new Soldier(false, 626, 1000, Color.DARK_GRAY, Color.black); //create the first enemy
-        //soldiers.add(enemy);
+        enemy = new Soldier(false, 626, 1000, makeRandomColor(), makeRandomColor()); //create the first enemy
         //initialize JFrame
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(null);
@@ -139,11 +145,13 @@ public class Main extends JFrame implements KeyListener {
 
         if (Soldier.isColliding(player, enemy)) {
             System.out.println("You lose!");
-
-        }
-        if (Soldier.isColliding(enemy, player)) {
+            lose = true;
+            draw();
+            player.died(g);
+        } else if (Soldier.isColliding(enemy, player)) {
             System.out.println("Enemy died!");
-            enemy.dead(g);
+            enemy.died(g);
+            enemy = new Soldier(false, 626, 1000, makeRandomColor(), makeRandomColor());
         }
     }
 
@@ -172,9 +180,18 @@ public class Main extends JFrame implements KeyListener {
         //draw enemy
         enemy.draw(g);
 
+        if (lose == true) {
+            g.setColor(Color.red);
+            g.clearRect(0, 0, WIDTH, HEIGHT);
+            //System.out.println("Lose screen");
+            g.drawString("You lost!", 323, 500);
+        }
+
         //release resources, show the buffer
         g.dispose();
         strategy.show();
+
+
     }
 
 
