@@ -118,7 +118,7 @@ public class Main extends JFrame implements KeyListener {
     }
 
     void init() {
-        player = new Soldier(true, 626, 1000, myColor, mycolor); //create the player
+        player = new Soldier(true, 626, 1000, Color.gray, mycolor); //create the player
         enemy = new Soldier(false, 626, 1000, makeRandomColor(), makeRandomColor()); //create the first enemy
         //initialize JFrame
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -178,11 +178,10 @@ public class Main extends JFrame implements KeyListener {
 
 
         //draw fps
-        g.setColor(Color.cyan);
+        g.setColor(Color.WHITE);
         g.drawString(Long.toString(fps), 10, 40);
 
         //draw player
-        g.setColor(myColor);
         player.draw(g);
 
         //draw enemy
