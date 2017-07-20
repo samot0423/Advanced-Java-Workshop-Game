@@ -81,7 +81,7 @@ public class Main extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent keyEvent) {
         for (int i = keys.size() - 1; i >= 0; i--) {
-            switch(keys.get(i)){
+            switch (keys.get(i)) {
                 case KeyEvent.VK_SPACE:
                     player.Swing();
                     break;
@@ -155,7 +155,7 @@ public class Main extends JFrame implements KeyListener {
             lose = true;
             draw();
             player.died(g);
-        } else if (Soldier.isColliding(enemy, player)){
+        } else if (Soldier.isColliding(enemy, player)) {
             i++;
             System.out.println("Enemy " + i + " died!");
             enemy.died(g);
@@ -189,21 +189,37 @@ public class Main extends JFrame implements KeyListener {
         enemy.draw(g);
 
         if (lose == true) {
-            Font font = new Font("My Font", Font.BOLD, 50);
-            g.setColor(Color.CYAN);
+            Font font = new Font("My Font", Font.BOLD, 30);
+            g.setColor(Color.BLACK);
             g.clearRect(0, 0, WIDTH, HEIGHT);
-            g.setFont (font);
+            g.setFont(font);
             //System.out.println("Lose screen");
-            g.drawString ("You lost!", 250, 500);
+            g.drawString("You died!", 250, 400);
+            if (i == 0) {
+                g.drawString("You killed no one.", 200, 450);
+                g.drawString("Patience, you must have, young padawan", 5, 550);
+            } else if (i == 1) {
+                g.drawString("You killed a single man. Or woman.", 50, 450);
+                g.drawString("Can't be sexist nowadays. :P", 50, 500);
+                // g.drawString("Maybe you should practice some more.", 50, 550);
+            } else {
+                g.drawString("You murdered " + i + " enemies!", 150, 450);
+                g.drawString("You did well, young padawan.", 150, 500);
+            }
+        } else {
+            Font font = new Font("My Font", Font.BOLD, 30);
+            g.setColor(Color.WHITE);
+            g.setFont(font);
+            if (i == 1) {
+                g.drawString(i + " kill", 500, 975);
+            } else {
+                g.drawString(i + " kills", 500, 975);
+            }
         }
-
         //release resources, show the buffer
         g.dispose();
         strategy.show();
-
-
     }
-
 
     public void run() {
         init();

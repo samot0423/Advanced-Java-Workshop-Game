@@ -1,5 +1,3 @@
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -16,14 +14,14 @@ public class Soldier {
 
     float sp = 105.0f; //speed
     final float ts = (float) Math.toRadians(125); //turning speed
-    final float ss = ts * 10;
+    final float ss = ts * 15;
     float di;
 
     //weapon variables
     Vector wsz = new Vector(sz.y * 1.5f, sz.x / 3); //weapon size
     Vector wp = new Vector(sz.x / 6, sz.y / 2); //weapon position (relative to soldier)
-    Vector wb = Vector.add(wp, new Vector(wsz.y * (2.0f / 3.0f), wsz.x / 2)); //weapon hitbox
-    float wr = 7.0f; //weapon radius
+    Vector wb = Vector.add(wp, new Vector(wsz.x * (5.0f / 6.0f), wsz.y / 2.0f)); //weapon hitbox
+    float wr = 12.5f; //weapon radius
     Color wc; //weapon color
     boolean dead = false;
 
@@ -65,7 +63,7 @@ public class Soldier {
                 d = v.dir();
                 isMoving = true;
             }
-            if (!isSwinging && (Vector.sub(Main.player.p, Main.enemy.p)).sqmag() < Math.pow(30, 2)) {
+            if (!isSwinging && (Vector.sub(Main.player.p, Main.enemy.p)).sqmag() < Math.pow(100, 2)) {
                 Swing();
             }
 
@@ -107,7 +105,6 @@ public class Soldier {
         }
 
     }
-
     public boolean isDead() {
         return dead;
     }
@@ -118,7 +115,14 @@ public class Soldier {
         if (a.isDead() || b.isDead()) {
             return false;
         } else {
-            return (Vector.sub(a.p, Vector.add(b.p, Vector.rotate(b.wb, b.d))).sqmag() < (float) Math.pow(a.sz.ix / 2 + b.wr, 2));
+            if (Vector.sub(a.p, Vector.add(b.p, Vector.rotate(b.wb, b.d))).sqmag() < (float) Math.pow(a.sz.ix / 2 + b.wr, 2)) {
+                return true;
+            } else if (b.isSwinging) {
+                if (Vector.sub(a.p, b.p).sqmag() < (float) Math.pow(a.sz.ix / 2 + b.wsz.x, 2)) {
+                    return true;
+                }
+            }
+            return Vector.sub(a.p, b.p).sqmag() < (float) Math.pow(a.sz.ix / 2 + b.sz.x / 2, 2);
         }
     }
 
