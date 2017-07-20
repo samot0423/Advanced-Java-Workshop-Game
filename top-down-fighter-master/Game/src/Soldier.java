@@ -16,6 +16,8 @@ public class Soldier {
 
     float sp = 105.0f; //speed
     final float ts = (float) Math.toRadians(125); //turning speed
+    final float ss = ts * 10;
+    float di;
 
     //weapon variables
     Vector wsz = new Vector(sz.y * 1.5f, sz.x / 3); //weapon size
@@ -29,6 +31,8 @@ public class Soldier {
     boolean isMovingBackwards; //is the player moving backwards
 
     boolean isPlayer; //is this player or npc
+
+    boolean isSwinging = false;
 
     //create array list to detect collision between weapon and soldier
     // ArrayList<Soldier> soldiers = new ArrayList<>();
@@ -55,19 +59,23 @@ public class Soldier {
                 isMoving = false;
                 // v = new Vector(0, 0);
             } else {
-                Vector fp = Vector.add(Main.player.p, Vector.mult(Main.player.v, 2f));
+                Vector fp = Vector.add(Main.player.p, Vector.mult(Main.player.v, 0.25f));
                 v = Vector.sub(fp, p);
                 v.setMag(sp - 5);
                 d = v.dir();
                 isMoving = true;
             }
+            if (!isSwinging && (Vector.sub(Main.player.p, Main.enemy.p)).sqmag() < Math.pow(30, 2)) {
+                Swing();
+            }
+
 
         } else if (isMoving && isPlayer) {
             v = Vector.unit2D(d);
             v.mult(sp);
 
             //invert if reversing
-            if (isMovingBackwards) v.mult(-1.0f);
+            if (isMovingBackwards) v.mult(-.75f);
         } else
             v = new Vector(0, 0);
 
@@ -90,6 +98,13 @@ public class Soldier {
         } else if (p.iy + sz.y >= WindowSize.y + 25) {
             p.setY(51);
         }
+        if (isSwinging) {
+            d += ss * dt;
+            if (d > di + (Math.PI * 2)) {
+                isSwinging = false;
+                d %= Math.PI * 2;
+            }
+        }
 
     }
 
@@ -105,6 +120,11 @@ public class Soldier {
         } else {
             return (Vector.sub(a.p, Vector.add(b.p, Vector.rotate(b.wb, b.d))).sqmag() < (float) Math.pow(a.sz.ix / 2 + b.wr, 2));
         }
+    }
+
+    public void Swing() {
+        di = d;
+        isSwinging = true;
     }
 
     public void turnLeft() {

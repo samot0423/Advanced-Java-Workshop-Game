@@ -205,6 +205,7 @@ public class Vector {
         return (float) Math.sqrt(sqmag());
     }
 
+
     public void normalize() {
         this.div(this.mag());
     }

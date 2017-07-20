@@ -10,11 +10,12 @@ import java.util.ArrayList;
 
 public class Main extends JFrame implements KeyListener {
     public static Soldier player;
-    Soldier enemy;
+    public static Soldier enemy;
     Color myColor = new Color(117, 68, 24);
     Color mycolor = new Color(251, 251, 251);
     Color MyColor = new Color(52, 157, 39);
     boolean lose = false;
+    int i = 0;
 
     Graphics2D g;
 
@@ -38,6 +39,7 @@ public class Main extends JFrame implements KeyListener {
                 case KeyEvent.VK_S:
                     player.moveBackwards();
                     break;
+
             }
         }
        /* Vector currentp = player.getPosition();
@@ -79,6 +81,11 @@ public class Main extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent keyEvent) {
         for (int i = keys.size() - 1; i >= 0; i--) {
+            switch(keys.get(i)){
+                case KeyEvent.VK_SPACE:
+                    player.Swing();
+                    break;
+            }
             if (keys.get(i) == keyEvent.getKeyCode())
                 keys.remove(i);
         }
@@ -148,8 +155,9 @@ public class Main extends JFrame implements KeyListener {
             lose = true;
             draw();
             player.died(g);
-        } else if (Soldier.isColliding(enemy, player)) {
-            System.out.println("Enemy died!");
+        } else if (Soldier.isColliding(enemy, player)){
+            i++;
+            System.out.println("Enemy " + i + " died!");
             enemy.died(g);
             enemy = new Soldier(false, 626, 1000, makeRandomColor(), makeRandomColor());
         }
@@ -181,10 +189,12 @@ public class Main extends JFrame implements KeyListener {
         enemy.draw(g);
 
         if (lose == true) {
-            g.setColor(Color.red);
+            Font font = new Font("My Font", Font.BOLD, 50);
+            g.setColor(Color.CYAN);
             g.clearRect(0, 0, WIDTH, HEIGHT);
+            g.setFont (font);
             //System.out.println("Lose screen");
-            g.drawString("You lost!", 323, 500);
+            g.drawString ("You lost!", 250, 500);
         }
 
         //release resources, show the buffer
