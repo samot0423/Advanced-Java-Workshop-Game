@@ -15,6 +15,7 @@ public class Main extends JFrame implements KeyListener {
     Color mycolor = new Color(251, 251, 251);
     Color MyColor = new Color(52, 157, 39);
     boolean lose = false;
+    float timer = 1.5f;
     int i = 0;
 
     Graphics2D g;
@@ -91,7 +92,6 @@ public class Main extends JFrame implements KeyListener {
         }
     }
 
-
     //window vars
     private final int MAX_FPS;
     private final int WIDTH;
@@ -149,17 +149,20 @@ public class Main extends JFrame implements KeyListener {
 
         player.update(dt);
         enemy.update(dt);
-
-        if (Soldier.isColliding(player, enemy)) {
-            System.out.println("You lose!");
-            lose = true;
-            draw();
-            player.died(g);
-        } else if (Soldier.isColliding(enemy, player)) {
-            i++;
-            System.out.println("Enemy " + i + " died!");
-            enemy.died(g);
-            enemy = new Soldier(false, 626, 1000, makeRandomColor(), makeRandomColor());
+        timer -= dt;
+        if (timer <= 0) {
+            if (Soldier.isColliding(player, enemy)) {
+                System.out.println("You lose!");
+                lose = true;
+                draw();
+                player.died(g);
+            } else if (Soldier.isColliding(enemy, player)) {
+                i++;
+                System.out.println("Enemy " + i + " died!");
+                enemy.died(g);
+                enemy = new Soldier(false, 626, 1000, makeRandomColor(), makeRandomColor());
+                timer = 1.5f;
+            }
         }
     }
 
@@ -187,7 +190,7 @@ public class Main extends JFrame implements KeyListener {
         //draw enemy
         enemy.draw(g);
 
-        if (lose == true) {
+        if (lose) {
             Font font = new Font("My Font", Font.BOLD, 30);
             g.setColor(Color.BLACK);
             g.clearRect(0, 0, WIDTH, HEIGHT);
@@ -196,14 +199,14 @@ public class Main extends JFrame implements KeyListener {
             g.drawString("You died!", 250, 400);
             if (i == 0) {
                 g.drawString("You killed no one.", 200, 450);
-                g.drawString("Patience, you must have, young padawan", 5, 550);
+                //g.drawString("Patience, you must have, young padawan", 5, 550);
             } else if (i == 1) {
-                g.drawString("You killed a single man. Or woman.", 50, 450);
-                g.drawString("Can't be sexist nowadays. :P", 50, 500);
+                g.drawString("You killed a single man." /*"Or woman."*/, 150, 450);
+               // g.drawString("Women could be knights too", 50, 500);
                 // g.drawString("Maybe you should practice some more.", 50, 550);
             } else {
                 g.drawString("You murdered " + i + " enemies!", 150, 450);
-                g.drawString("You did well, young padawan.", 150, 500);
+                //g.drawString("You did well, young padawan.", 150, 500);
             }
         } else {
             Font font = new Font("My Font", Font.BOLD, 30);

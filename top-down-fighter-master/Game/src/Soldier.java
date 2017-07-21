@@ -105,6 +105,7 @@ public class Soldier {
         }
 
     }
+
     public boolean isDead() {
         return dead;
     }
